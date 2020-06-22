@@ -29,14 +29,14 @@ func TestEncrypt(t *testing.T) {
 		rd := strings.NewReader(table.encryptSrc)
 
 		ioWr := bytes.NewBufferString("")
-		err := XOREncryptObj.Encrypt(rd, ioWr)
+		err := XOREncryptObj.Encrypt(rd, ioWr, nil)
 		if err != nil {
 			t.Error(err.Error())
 		}
 		encryptStr := strings.NewReader(ioWr.String())
 		ioWr = bytes.NewBufferString("")
 
-		err = XOREncryptObj.Encrypt(encryptStr, ioWr)
+		err = XOREncryptObj.Encrypt(encryptStr, ioWr, nil)
 		if err != nil {
 			t.Error(err.Error())
 		}

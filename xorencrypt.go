@@ -17,15 +17,20 @@ func NewXOREncrypt(key string) *XOREncrypt {
 }
 
 //Encrypt 加密
-func (x *XOREncrypt) Encrypt(buf io.Reader, encryptFileBuf io.Writer) error {
+func (x *XOREncrypt) Encrypt(rd io.Reader, wr io.Writer, buf []byte) error {
 	secureKey := []byte(x.key)
 
 	maxLen := len(secureKey)
 	curIndex := 0
-	block := make([]byte, 4096)
+	var block []byte
+	if buf == nil {
+		block = make([]byte, 4096)
+	} else {
+		block = buf
+	}
 	var tmp byte
 	for {
-		n, err := buf.Read(block)
+		n, err := rd.Read(block)
 		if err != nil && err != io.EOF {
 			return err
 		}
@@ -38,7 +43,7 @@ func (x *XOREncrypt) Encrypt(buf io.Reader, encryptFileBuf io.Writer) error {
 			curIndex++
 			curIndex = curIndex % maxLen
 		}
-		encryptFileBuf.Write(block[:n])
+		wr.Write(block[:n])
 	}
 	return nil
 }
