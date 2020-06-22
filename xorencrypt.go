@@ -1,13 +1,24 @@
 package xorencrypt
 
 import (
-	"bufio"
 	"io"
 )
 
+//XOREncrypt init Data
+type XOREncrypt struct {
+	key string
+}
+
+//NewXOREncrypt new obj
+func NewXOREncrypt(key string) *XOREncrypt {
+	return &XOREncrypt{
+		key: key,
+	}
+}
+
 //Encrypt 加密
-func Encrypt(key string, buf *bufio.Reader, encryptFileBuf *bufio.Writer) error {
-	secureKey := []byte(key)
+func (x *XOREncrypt) Encrypt(buf io.Reader, encryptFileBuf io.Writer) error {
+	secureKey := []byte(x.key)
 
 	maxLen := len(secureKey)
 	curIndex := 0
@@ -29,6 +40,5 @@ func Encrypt(key string, buf *bufio.Reader, encryptFileBuf *bufio.Writer) error 
 		}
 		encryptFileBuf.Write(block[:n])
 	}
-	encryptFileBuf.Flush()
 	return nil
 }

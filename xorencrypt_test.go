@@ -1,7 +1,6 @@
 package xorencrypt
 
 import (
-	"bufio"
 	"bytes"
 	"math/rand"
 	"strings"
@@ -20,26 +19,24 @@ func TestEncrypt(t *testing.T) {
 	var letterRunes = []rune("1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 	rand.Seed(time.Now().UnixNano())
-	b := make([]rune, 5)
+	b := make([]rune, rand.Intn(len(letterRunes)+1))
 	for i := range b {
 		b[i] = letterRunes[rand.Intn(len(letterRunes))]
 	}
-	key := string(b)
+
+	XOREncryptObj := NewXOREncrypt(string(b))
 	for _, table := range tables {
 		rd := strings.NewReader(table.encryptSrc)
-		bufRd := bufio.NewReader(rd)
 
 		ioWr := bytes.NewBufferString("")
-		bufWr := bufio.NewWriter(ioWr)
-		err := Encrypt(key, bufRd, bufWr)
+		err := XOREncryptObj.Encrypt(rd, ioWr)
 		if err != nil {
 			t.Error(err.Error())
 		}
-		encryptStr := ioWr.String()
+		encryptStr := strings.NewReader(ioWr.String())
 		ioWr = bytes.NewBufferString("")
-		bufWr = bufio.NewWriter(ioWr)
 
-		err = Encrypt(key, bufio.NewReader(strings.NewReader(encryptStr)), bufWr)
+		err = XOREncryptObj.Encrypt(encryptStr, ioWr)
 		if err != nil {
 			t.Error(err.Error())
 		}
