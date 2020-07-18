@@ -9,8 +9,13 @@ type XOREncrypt struct {
 	key string
 }
 
-//NewXOREncrypt new obj
-func NewXOREncrypt(key string) *XOREncrypt {
+//SetKey 设置加密字符串
+func (x *XOREncrypt) SetKey(key string) {
+	x.key = key
+}
+
+//New new obj
+func New(key string) *XOREncrypt {
 	return &XOREncrypt{
 		key: key,
 	}

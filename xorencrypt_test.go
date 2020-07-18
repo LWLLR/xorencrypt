@@ -24,7 +24,7 @@ func TestEncrypt(t *testing.T) {
 		b[i] = letterRunes[rand.Intn(len(letterRunes))]
 	}
 
-	XOREncryptObj := NewXOREncrypt(string(b))
+	XOREncryptObj := New(string(b))
 	for _, table := range tables {
 		rd := strings.NewReader(table.encryptSrc)
 
