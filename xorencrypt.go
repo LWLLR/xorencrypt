@@ -14,6 +14,11 @@ func (x *XOREncrypt) SetKey(key string) {
 	x.key = key
 }
 
+//GetKey 获取加密字符串
+func (x *XOREncrypt) GetKey() string {
+	return x.key
+}
+
 //New new obj
 func New(key string) *XOREncrypt {
 	return &XOREncrypt{

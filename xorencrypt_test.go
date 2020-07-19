@@ -25,6 +25,9 @@ func TestEncrypt(t *testing.T) {
 	}
 
 	XOREncryptObj := New(string(b))
+	if XOREncryptObj.GetKey() != string(b) {
+		t.Error("Get key fail")
+	}
 	for _, table := range tables {
 		rd := strings.NewReader(table.encryptSrc)
 
@@ -43,5 +46,9 @@ func TestEncrypt(t *testing.T) {
 		if ioWr.String() != table.encryptSrc {
 			t.Errorf("encrypt=>%s decrypt=>%s", table.encryptSrc, ioWr.String())
 		}
+	}
+	XOREncryptObj.SetKey("test")
+	if XOREncryptObj.GetKey() != "test" {
+		t.Error("Set key fail")
 	}
 }
